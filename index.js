@@ -15,7 +15,6 @@ app.use(cors({
     credentials: true,
 }));
 
-
 const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -92,7 +91,6 @@ app.post("/create",(req,res)=>{
         console.error("Error creating user:", error);
         res.status(500).send({ Status: "error", data: error.message });
         });
-
     }
     catch(error){
         res.status(500).send({ Status: "error", data: error.message });
@@ -286,6 +284,20 @@ app.post("/event/del",async (req,res)=>{
 })
 
 
+app.post("/event/getid",async (req,res)=>{
+
+    if(req.body.Eventid){
+        try{
+            const data = await Event.findOne({Eventid:req.body.Eventid});
+            res.status(200).send({data:data});
+        }
+        catch(error){
+            res.send({error:error});
+        }
+    }
+    
+})
+
 // -----------------------useform--------------
 
 // register event
@@ -318,14 +330,17 @@ app.post("/register/event", async (req, res) => {
         console.log(s);
         const eventstatus = await Event.updateOne({Eventid:eve},{RegisteredUsers:s})
         // Send confirmation email
-
+        data.Eventname = abcd.Eventname;
+        data.EventDate = abcd.EventDate;
+        data.Eventvenue = abcd.Eventvenue;
+        console.log(data);
         await sendConfirmationEmail(data);
 
         // Additional processing or saving to the database can be done here
 
         res.status(200).json({ message: "Registration successful" });
       } else {
-        res.status(404).json({ message: "Event not found" });
+        res.status(404).json({ error:"Event not found",message: "Event not found" });
       }
     } else {
       res.status(400).json({ message: "Invalid request" });
@@ -346,12 +361,12 @@ async function sendConfirmationEmail(data) {
       subject: "Registration Confirmation",
       text: `Dear ${data.name},
   
-  Thank you for registering for the event "${data.Event.Eventname}".
+  Thank you for registering for the event "${data.Eventname}".
   
   Event Details:
-  - Event Name: ${data.Event.Eventname}
-  - Event Date: ${data.Event.EventDate}
-  - Event Venu : ${data.Event.Eventvenue}
+  - Event Name: ${data.Eventname}
+  - Event Date: ${data.EventDate}
+  - Event Venu : ${data.Eventvenue}
   - Event Location: KL University
   
   We look forward to seeing you at the event!
