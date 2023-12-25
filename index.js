@@ -219,7 +219,7 @@ app.post("/event/create", async (req, res) => {
 });
 app.get("/event/get", async (req, res) => {
     try {
-        const events = await Event.find().sort({ Eventid: -1 });
+        const events = await Event.find().sort({_id:-1});
         res.status(200).send({ events: events });
     } catch (error) {
         res.status(500).send({ error: error.message });
