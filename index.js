@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ limit: '20mb', extended: true }));
 // app.use(express.urlencoded({ extended: false }));
 app.use(express.json()); // Use express.json() middleware to parse JSON data
 app.use(cors({
-    origin: process.env.origin,
+    origin: "*",
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
 }));
@@ -39,7 +39,7 @@ require("./Schema");
 
 // const Images = mongoose.model("Image");
 
-const PORT = 8888;
+const PORT = process.env.port;
 
 app.listen(PORT, () => {
     console.log(`Server started listening at http://localhost:${PORT}`);
