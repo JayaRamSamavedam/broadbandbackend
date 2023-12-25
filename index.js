@@ -115,7 +115,7 @@ app.post("/getbyid",async(req,res)=>{
 
 app.get("/get", async (req, res) => {
     try {
-        const teammembers = await user.find().sort({ id: -1 });
+        const teammembers = await user.find().sort({ id: 1 });
         res.send({ Status: "ok", team: teammembers });
     } catch (error) {
         res.send({ error: error.message });
