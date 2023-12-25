@@ -5,12 +5,12 @@ const cors = require('cors');
 const nodemailer = require("nodemailer");
 require('dotenv').config()
 const bodyParser = require('body-parser');
-app.use(bodyParser.json({ limit: '10mb' }));
-app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
+app.use(bodyParser.json({ limit: '20mb' }));
+app.use(bodyParser.urlencoded({ limit: '20mb', extended: true }));
 // app.use(express.urlencoded({ extended: false }));
 app.use(express.json()); // Use express.json() middleware to parse JSON data
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: process.env.origin,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
 }));
@@ -25,7 +25,7 @@ const transporter = nodemailer.createTransport({
   });
 
 
-const mongoUrl = "mongodb+srv://broadband:broadband@cluster0.mszvmkh.mongodb.net/Broadband";
+const mongoUrl = process.env.dburl;
 
 mongoose.connect(mongoUrl, {
     useNewUrlParser: true,
